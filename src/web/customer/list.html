@@ -13,9 +13,7 @@
       <table class="table table-striped">
         <thead class="thead-dark">
           <tr>
-            <th scope="col">#</th>
             <th scope="col">Company Name</th>
-            <th scope="col">Contact</th>
           </tr>
         </thead>
         <tbody id="customer-list">
@@ -26,7 +24,7 @@
 
     <script type="module">
       // ExpressサーバのAPIエンドポイントのURL
-      import config from "./config.js";
+      import config from "../config.js";
 
       fetch(`${config.apiUrl}/customers`)
         .then((response) => {
@@ -39,11 +37,13 @@
           data.forEach((customer, index) => {
             const row = list.insertRow();
             const cell1 = row.insertCell(0);
-            const cell2 = row.insertCell(1);
-            const cell3 = row.insertCell(2);
-            cell1.textContent = index + 1;
-            cell2.textContent = customer.companyname;
-            cell3.textContent = customer.contact;
+          
+	    const link = document.createElement("a");
+
+            link.href = `detail.html?id=${customer.customer_id}`;
+            link.textContent = customer.company_name;
+
+            cell1.appendChild(link);
           });
         })
         .catch((error) => console.error(error));

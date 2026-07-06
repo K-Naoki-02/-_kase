@@ -2,11 +2,11 @@
   "name": "app",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "hoge.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js",
-    "dev": "nodemon index.js"
+    "start": "node hoge.js",
+    "dev": "nodemon hoge.js"
   },
   "keywords": [],
   "author": "",
