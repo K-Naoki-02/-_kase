@@ -5,8 +5,8 @@
   "main": "hoge.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node hoge.js",
-    "dev": "nodemon hoge.js"
+    "start": "node index.js",
+    "dev": "nodemon index.js"
   },
   "keywords": [],
   "author": "",
