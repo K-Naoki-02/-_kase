@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>顧客詳細</title>
+
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+
+<body>
+
+<div class="container mt-5">
+
+    <h1>顧客詳細</h1>
+
+    <table class="table table-bordered">
+
+        <tr>
+            <th>顧客ID</th>
+            <td id="customer_id"></td>
+        </tr>
+
+        <tr>
+            <th>会社名</th>
+	    <td>
+		 <input
+		     type="text"
+		     id="company_name"
+		     class="form-control">
+            </td>
+        </tr>
+        <tr>
+            <th>業種</th>
+	    <td>
+		 <input
+		     type="text"	
+		     id="industry"
+		     class="form-control">
+            </td>		 
+        </tr>
+
+        <tr>
+            <th>連絡先</th>
+            <td>
+                <input
+                    type="text"
+		    id="contact"
+                    class="form-control">
+	</td>
+        </tr>
+
+        <tr>	
+            <th>所在地</th>
+	    <td>
+                <input
+                    type="text"
+	 	    id="location"
+		    class="form-control">
+	    </td>
+	</tr>
+
+        <tr>
+            <th>登録日時</th>
+            <td id="created_date"></td>
+        </tr>
+
+        <tr>
+            <th>更新日時</th>
+            <td id="updated_date"></td>
+        </tr>
+        
+   </table>
+   
+   <button id="update-button" class="btn btn-primary">
+       更新
+   </button>  
+
+   <button id="delete-button" class="btn btn-danger">
+       削除
+   </button>
+
+   <a href="list.html" class="btn btn-secondary">
+       一覧へ戻る
+   </a>
+
+</div>
+
+<script type="module">
+import config from "../config.js";
+
+// URLからidを取得
+const params = new URLSearchParams(window.location.search);
+const id = params.get("id");
+
+console.log(id);
+
+// APIを呼び出す
+fetch(`${config.apiUrl}/customers/${id}`)
+  .then((response) => response.json())
+  .then((customer) => {
+
+    document.getElementById("customer_id").textContent =
+      customer.customer_id;
+
+    document.getElementById("company_name").value =
+      customer.company_name;
+
+    document.getElementById("industry").value =
+      customer.industry;
+
+    document.getElementById("contact").value =
+      customer.contact;
+
+    document.getElementById("location").value =
+      customer.location;
+
+    document.getElementById("created_date").textContent =
+      new Date(customer.created_date).toLocaleString("ja-JP");
+
+    document.getElementById("updated_date").textContent =
+      new Date(customer.updated_date).toLocaleString("ja-JP");
+
+  })
+  .catch((error) => console.error(error));
+  
+document.getElementById("delete-button").addEventListener("click", () => {
+
+    alert("削除していいですか？");
+
+    fetch(`${config.apiUrl}/customers/${id}`, {
+        method: "DELETE"
+    })
+    .then((response) => response.json())
+    .then((data) => {
+   
+        if (data.success) {
+
+	    alert("削除しました。");
+
+	    window.location.href = "list.html";
+
+	} else {
+
+	    alert("削除に失敗しました。");
+
+	}
+
+   })
+   .catch((error) => console.error(error));
+
+});
+
+document.getElementById("update-button").addEventListener("click", () => {
+
+    alert("更新します。");
+
+    const company_name =
+        document.getElementById("company_name").value;
+
+    const industry =
+        document.getElementById("industry").value;
+
+    const contact =
+        document.getElementById("contact").value;
+
+    const customer_location =
+        document.getElementById("location").value;
+
+    fetch(`${config.apiUrl}/customers/${id}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            company_name,
+            industry,
+            contact,
+            location:customer_location
+        })
+    })
+    .then((response) => response.json())
+    .then((data) => {
+
+        if (data.success) {
+
+            alert("更新しました。");
+
+            location.reload();
+
+        } else {
+
+            alert("更新に失敗しました。");
+
+        }
+
+    })
+    .catch((error) => console.error(error));
+
+});
+</script>
+</body>
+</html>
+

@@ -14,13 +14,15 @@ services:
     container_name: nodejs
     image: node:22-bullseye
     ports:
-      - "1985:1985"
+      - "5916:5916"
     volumes:
       - ./src/node:/app
       - ./work:/work
     working_dir: /app
+    command: npm run dev
     tty: true # 開発時のみ有効
-
+    env_file:
+      - .env
   db:
     container_name: postgres
     image: postgres:17-alpine
